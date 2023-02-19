@@ -10,16 +10,25 @@ export default function CertifGenerator() {
     }
   };
   const generatePDF = useCallback(() => {
-    const pdf = new jsPDF({
+    const certificate = new jsPDF({
       orientation: "landscape",
     });
+    const centerWidth = certificate.internal.pageSize.getWidth() / 2;
+    const textWidth = certificate.getTextWidth(name);
     const x = 0;
     const y = 0;
-    pdf.addImage("./certif-template.png", "JPEG", x, y, 300, 212);
-    pdf.setTextColor(0, 0, 0);
-    pdf.setFontSize(24);
-    pdf.text(name, 120, 88);
-    const pdfDataUrl = pdf.output("dataurlstring");
+    certificate.addImage(
+      "./certif-template.png",
+      "JPEG",
+      x,
+      y,
+      centerWidth - textWidth / 2,
+      212
+    );
+    certificate.setTextColor(0, 0, 0);
+    certificate.setFontSize(24);
+    certificate.text(name, 120, 88);
+    const pdfDataUrl = certificate.output("dataurlstring");
     const pdfPreview = document.getElementById(
       "pdf-preview"
     ) as HTMLIFrameElement;
