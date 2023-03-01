@@ -15,7 +15,7 @@ export default function CertifGenerator() {
     const certificate = new jsPDF({
       orientation: "landscape",
     });
-    const centerWidth = certificate.internal.pageSize.getWidth() / 2;
+    const centerWidth = 150;
     const textWidth = certificate.getTextWidth(name);
     const x = 0;
     const y = 0;
@@ -27,30 +27,21 @@ export default function CertifGenerator() {
     certificate.setFontSize(22);
     certificate.setFont("helvetica", "bolditalic");
     certificate.setLineHeightFactor(1.2);
+    console.log(certificate.getFontList());
     console.log(nameClass.length);
     if (nameClass.length <= 42) {
-      certificate.text(
-        nameClass,
-        centerWidth - textWidth / 2 + 30 - nameLength,
-        133,
-        {
-          align: "center",
-        }
-      );
+      certificate.text(nameClass, centerWidth, 133, {
+        align: "center",
+      });
     } else {
       const className = certificate.splitTextToSize(nameClass, 180);
-      certificate.text(
-        className,
-        centerWidth - textWidth / 2 + 30 - nameLength,
-        129,
-        {
-          align: "center",
-        }
-      );
+      certificate.text(className, centerWidth, 129, {
+        align: "center",
+      });
     }
     certificate.setFontSize(12);
     certificate.setFont("helvetica", "normal");
-    certificate.text(date, centerWidth - textWidth / 2 + 51 - nameLength, 148);
+    certificate.text(date, centerWidth + 20.8, 148);
     const pdfDataUrl = certificate.output("arraybuffer");
     console.log("pdfDataUrl: ", pdfDataUrl);
     const pdfUrl = URL.createObjectURL(
